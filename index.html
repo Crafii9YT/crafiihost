@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Serverpanel | CrafiiHost</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#3b82f6;
+  --primary-glow:#60a5fa;
+  --secondary:#050507;
+  --card:#0b0b12;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:#050507;
+  color:var(--text);
+  overflow-x:hidden;
+  transition:filter .3s ease;
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  height:700px;
+  background:url("Banner.png") center/cover no-repeat;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:150px;
+  background:linear-gradient(to bottom,rgba(5,5,7,0) 0%,#050507 100%);
+}
+
+.hero img{
+  width:600px;
+  max-width:90%;
+  filter:drop-shadow(0 0 70px rgba(167,139,250,0.9));
+}
+
+.hero .banner-text{
+  max-width:720px;
+  color:black;
+  font-size:1.2rem;
+  margin-bottom:30px;
+}
+
+.hero .cta{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+/* BUTTONS */
+.btn{
+  padding:16px 28px;
+  font-size:1.1rem;
+  border-radius:14px;
+  font-weight:600;
+  text-decoration:none;
+  transition:.25s;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-glow));
+  color:#050507;
+  border:none;
+}
+
+.btn-outline{
+  border:1px solid rgba(167,139,250,0.4);
+  background:transparent;
+  color:#050507;
+}
+
+/* CONTENT */
+section{
+  position:relative;
+  padding:80px 20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.top-create-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+}
+
+.center-empty{
+  text-align:center;
+  margin:160px 0 80px;
+  font-size:1.2rem;
+  color:var(--muted);
+}
+
+/* POPUPS */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(0px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+}
+
+.popup.active{
+  opacity:1;
+  pointer-events:all;
+  backdrop-filter:blur(8px);
+}
+
+.popup-card{
+  background:var(--card);
+  padding:35px;
+  border-radius:24px;
+  width:420px;
+  max-width:90%;
+  border:1px solid rgba(167,139,250,0.25);
+  box-shadow:0 30px 100px rgba(0,0,0,0.9);
+  text-align:center;
+  transform:scale(.7) translateY(60px);
+  opacity:0;
+  transition:.4s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+.popup.active .popup-card{
+  transform:scale(1) translateY(0);
+  opacity:1;
+}
+
+.popup-card input{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:12px;
+  border:1px solid rgba(167,139,250,0.2);
+  background:#050507;
+  color:var(--text);
+}
+
+.popup-actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+/* ERROR */
+.error-icon{
+  width:80px;
+  height:80px;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width:1024px){
+  .hero{
+    height:500px;
+  }
+
+  .hero img{
+    width:400px;
+  }
+
+  section{
+    padding:60px 15px;
+  }
+}
+
+@media(max-width:768px){
+  .hero{
+    height:420px;
+  }
+
+  .hero img{
+    width:260px;
+  }
+
+  .hero .cta{
+    flex-direction:column;
+    width:90%;
+  }
+
+  .btn{
+    width:100%;
+    text-align:center;
+  }
+
+  .top-create-btn{
+    position:static;
+    text-align:center;
+    margin-bottom:30px;
+  }
+
+  .popup-card{
+    width:95%;
+    padding:25px;
+  }
+}
+
+@media(max-width:480px){
+  .hero{
+    height:350px;
+  }
+
+  .hero img{
+    width:200px;
+  }
+
+  .hero .banner-text{
+    font-size:.95rem;
+  }
+
+  .center-empty{
+    margin:100px 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <img src="Logo.png">
+  <div class="banner-text">
+    The Perfect <strong>Hosting</strong> for free servers!
+  </div>
+</div>
+
+<section>
+
+<div class="top-create-btn">
+  <button class="btn btn-primary" onclick="openPopup('createPopup')">
+    Create Server
+  </button>
+</div>
+
+<div class="center-empty">
+  No server found
+</div>
+
+</section>
+
+<footer style="text-align:center;padding:40px;color:var(--text);border-top:1px solid rgba(167,139,250,0.15);">
+  © 2026 <span style="color:var(--primary);font-weight:600;">CrafiiHost</span>
+</footer>
+
+<!-- POPUPS -->
+
+<div id="createPopup" class="popup">
+  <div class="popup-card">
+    <h2>Create Server</h2>
+    <input type="text" id="name" placeholder="Server Name">
+    <select id="type">
+        <option value="">Select Type</option>
+        <option value="Spieler1">Minecraft</option>
+        <option value="Spieler2">TeamSpeak3</option>
+        <option value="Spieler3">Hytale</option>
+    </select>
+
+    <div class="popup-actions">
+      <button class="btn btn-primary" onclick="createWorld()">Erstellen</button>
+      <button class="btn btn-outline" onclick="closePopup('createPopup')">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<div id="limitError" class="popup">
+  <div class="popup-card">
+    <img src="error.png" class="error-icon">
+    <h2>Error</h2>
+    <p>Maximum Server Amount reached.</p>
+    <button class="btn btn-primary" onclick="closePopup('limitError')">Close</button>
+  </div>
+</div>
+
+<script>
+function openPopup(id){
+  document.getElementById(id).classList.add("active");
+}
+
+function closePopup(id){
+  document.getElementById(id).classList.remove("active");
+}
+
+function createWorld(){
+  const env = document.getElementById("env").value.trim().toLowerCase();
+  const createCard = document.querySelector("#createPopup .popup-card");
+
+  if(!["normal","nether","end"].includes(env)){
+    createCard.classList.add("shake");
+    setTimeout(()=>createCard.classList.remove("shake"),400);
+
+    setTimeout(()=>{
+      closePopup("createPopup");
+      openPopup("envError");
+    },350);
+    return;
+  }
+
+  closePopup("createPopup");
+  setTimeout(()=>openPopup("limitError"),300);
+}
+</script>
+
+</body>
+</html>
