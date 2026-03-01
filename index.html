@@ -150,6 +150,22 @@ section{
   transition:.5s;
 }
 
+.sidebar button{
+    background:rgba(11,11,18,.7);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(96,165,250,.2);
+    padding:12px;
+    border-radius:14px;
+    margin:6px 0;
+    transition:.3s;
+}
+
+.sidebar button:hover{
+    background:rgba(96,165,250,.2);
+    transform:translateX(6px);
+}
+
+
 /* PANEL */
 .panel-overlay{
   position:fixed;
@@ -294,6 +310,14 @@ footer{
    Teil 1
 ============================ */
 
+/*Saving*/
+let saved = localStorage.getItem("serverData");
+
+if(saved){
+server = JSON.parse(saved);
+setTimeout(renderCard,300);
+}
+
 /* SERVER STATE */
 const LIMITS = { cpu:200, ram:9, disk:50 };
 let server = { created:false, online:false, cpu:0, ram:0, disk:2.4, name:"" };
@@ -305,19 +329,36 @@ function closePopup(id){document.getElementById(id).classList.remove("active");}
 
 /* CREATE */
 function createServer(){
-  const name = document.getElementById("name").value.trim();
-  const type = document.getElementById("type").value;
-  if(!name || !type) return;
 
-  if(server.created){
-    closePopup("createPopup");
-    return;
-  }
+const name = document.getElementById("name").value.trim();
+const type = document.getElementById("type").value;
 
-  server.created=true;
-  server.name=name;
-  closePopup("createPopup");
-  renderCard();
+if(!name || !type) return;
+
+/* Persist Storage */
+server = {
+created:true,
+online:false,
+cpu:0,
+ram:0,
+disk:2.4,
+name:name,
+type:type,
+files:[
+{name:"server.jar",type:"file",content:"minecraft server"},
+{name:"logs",type:"folder",children:[]}
+],
+audit:[],
+backups:[],
+ports:[{port:25565}],
+splits:[]
+};
+
+localStorage.setItem("serverData",JSON.stringify(server));
+
+closePopup("createPopup");
+
+renderCard();
 }
 
 /* CARD */
@@ -721,16 +762,37 @@ showSplitter();
 ============================== */
 
 function showFiles(){
-    document.getElementById("content").innerHTML=`
-        <h2>Files</h2>
-        <p>server.jar</p>
-        <p>eula.txt</p>
-        <p>server.properties</p>
-        <p>logs/</p>
-        <button>Upload</button>
-        <button>Create File</button>
-        <button>Create Folder</button>
-    `;
+
+let current = getCurrentFolder();
+
+let html = `<h2>File Manager</h2>
+<button onclick="createFile()">New File</button>
+<button onclick="createFolder()">New Folder</button>
+<button onclick="enableUploadZone()">Upload</button>
+<hr>`;
+
+current.forEach(f=>{
+
+if(f.type==="folder"){
+html+=`📁 <span onclick="enterFolder('${f.name}')" 
+style="cursor:pointer;color:#60a5fa">
+${f.name}</span><br>`;
+}
+else{
+html+=`
+📄 ${f.name}
+<button onclick="editFile('${f.name}')">Edit</button>
+<button onclick="downloadFile('${f.name}')">Download</button>
+<br>
+`;
+}
+
+});
+
+html+=`<br><button onclick="goBackFolder()">Back</button>`;
+
+document.getElementById("content").innerHTML = html;
+
 }
 
 function showSettings(){
@@ -886,16 +948,20 @@ function createFolder(){
 
 function editFile(name){
 
-    let current = getCurrentFolder();
-    let file = current.find(f=>f.name===name);
+let current = getCurrentFolder();
 
-    if(!file) return;
+let file = current.find(f=>f.name===name);
 
-    let newContent = prompt("Edit file:", file.content);
-    if(newContent!==null){
-        file.content = newContent;
-        logAudit("Edited file: "+name);
-    }
+if(!file) return;
+
+let editor = prompt("Edit File Code:",file.content);
+
+if(editor !== null){
+file.content = editor;
+logAudit("Edited file "+name);
+}
+
+showFiles();
 }
 
 function downloadFile(name){
@@ -1152,6 +1218,47 @@ function showGraphs(){
         ctx.stroke();
 
     },800);
+}
+function updateBars(){
+
+if(!document.getElementById("cpuBar")) return;
+
+/* Random Stress Simulation */
+
+if(server.online){
+
+server.cpu += Math.random()*8;
+server.ram += Math.random()*0.3;
+
+}
+
+/* Crash Check */
+
+if(
+server.cpu > LIMITS.cpu * 1.1 ||
+server.ram > LIMITS.ram * 1.1
+){
+
+alert("Server crashed due to overload!");
+
+stop();
+return;
+}
+
+document.getElementById("cpuBar").style.width =
+(server.cpu/LIMITS.cpu*100)+"%";
+
+document.getElementById("ramBar").style.width =
+(server.ram/LIMITS.ram*100)+"%";
+
+document.getElementById("cpuText").innerText=
+server.cpu.toFixed(1)+"% / 200%";
+
+document.getElementById("ramText").innerText=
+server.ram.toFixed(2)+" GB / 9 GB";
+
+localStorage.setItem("serverData",JSON.stringify(server));
+
 }
 
 /* ==============================
