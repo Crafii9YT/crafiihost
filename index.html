@@ -32,20 +32,80 @@ body{
 }
 
 /* HERO */
-/* HERO FLOAT */
+.hero{
+  position:relative;
+  height:700px;
+  background:url("Banner.png") center/cover no-repeat;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:150px;
+  background:linear-gradient(to bottom,rgba(5,5,7,0) 0%,#050507 100%);
+}
+
 .hero img{
+  width:600px;
+  max-width:90%;
+  filter:drop-shadow(0 0 70px rgba(167,139,250,0.9));
   animation:float 6s ease-in-out infinite;
 }
 
 @keyframes float{
-  0%,100%{transform:translateY(0px);}
+  0%,100%{transform:translateY(0);}
   50%{transform:translateY(-20px);}
 }
 
-/* BUTTON HOVER GLOW */
+.hero .banner-text{
+  max-width:720px;
+  color:black;
+  font-size:1.2rem;
+  margin-bottom:30px;
+}
+
+.hero .cta{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+/* BUTTONS */
+.btn{
+  padding:16px 28px;
+  font-size:1.1rem;
+  border-radius:14px;
+  font-weight:600;
+  text-decoration:none;
+  transition:.25s;
+  cursor:pointer;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-glow));
+  color:#050507;
+  border:none;
+}
+
 .btn-primary:hover{
   box-shadow:0 0 25px rgba(96,165,250,0.8);
   transform:translateY(-3px);
+}
+
+.btn-outline{
+  border:1px solid rgba(167,139,250,0.4);
+  background:transparent;
+  color:#050507;
 }
 
 .btn-outline:hover{
@@ -53,13 +113,16 @@ body{
   transform:translateY(-3px);
 }
 
-/* BUTTON CLICK */
 .btn:active{
   transform:scale(.95);
 }
 
-/* SECTION FADE IN */
+/* CONTENT */
 section{
+  position:relative;
+  padding:80px 20px;
+  max-width:1200px;
+  margin:auto;
   animation:fadeUp 1s ease forwards;
 }
 
@@ -68,7 +131,71 @@ section{
   to{opacity:1;transform:translateY(0);}
 }
 
-/* POPUP SHAKE */
+.top-create-btn{
+  position:absolute;
+  top:20px;
+  right:20px;
+}
+
+.center-empty{
+  text-align:center;
+  margin:160px 0 80px;
+  font-size:1.2rem;
+  color:var(--muted);
+}
+
+/* POPUPS */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(0px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10000;
+  opacity:0;
+  pointer-events:none;
+  transition:.4s ease;
+}
+
+.popup.active{
+  opacity:1;
+  pointer-events:all;
+  backdrop-filter:blur(8px);
+}
+
+.popup-card{
+  background:var(--card);
+  padding:35px;
+  border-radius:24px;
+  width:420px;
+  max-width:90%;
+  border:1px solid rgba(167,139,250,0.25);
+  box-shadow:0 30px 100px rgba(0,0,0,0.9);
+  text-align:center;
+  transform:scale(.7) translateY(60px);
+  opacity:0;
+  transition:.45s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+.popup.active .popup-card{
+  transform:scale(1) translateY(0);
+  opacity:1;
+}
+
+.popup-card input,
+.popup-card select{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:12px;
+  border:1px solid rgba(167,139,250,0.2);
+  background:#050507;
+  color:var(--text);
+}
+
+/* SHAKE */
 @keyframes shake{
   0%,100%{transform:translateX(0);}
   20%{transform:translateX(-8px);}
@@ -81,18 +208,10 @@ section{
   animation:shake .4s ease;
 }
 
-/* POPUP FADE BG */
-.popup{
-  transition:opacity .4s ease, backdrop-filter .4s ease;
-}
-
-/* POPUP CARD SCALE */
-.popup-card{
-  transition:.45s cubic-bezier(.68,-0.55,.27,1.55);
-}
-
-/* ERROR ICON PULSE */
+/* ERROR ICON */
 .error-icon{
+  width:80px;
+  height:80px;
   animation:pulse 2s infinite;
 }
 
@@ -100,6 +219,28 @@ section{
   0%{transform:scale(1);}
   50%{transform:scale(1.1);}
   100%{transform:scale(1);}
+}
+
+/* RESPONSIVE bleibt unverändert */
+@media(max-width:1024px){
+  .hero{height:500px;}
+  .hero img{width:400px;}
+  section{padding:60px 15px;}
+}
+
+@media(max-width:768px){
+  .hero{height:420px;}
+  .hero img{width:260px;}
+  .btn{width:100%;}
+  .top-create-btn{position:static;text-align:center;margin-bottom:30px;}
+  .popup-card{width:95%;padding:25px;}
+}
+
+@media(max-width:480px){
+  .hero{height:350px;}
+  .hero img{width:200px;}
+  .hero .banner-text{font-size:.95rem;}
+  .center-empty{margin:100px 0;}
 }
 </style>
 </head>
@@ -131,8 +272,7 @@ section{
   © 2026 <span style="color:var(--primary);font-weight:600;">CrafiiHost</span>
 </footer>
 
-<!-- POPUPS -->
-
+<!-- CREATE POPUP -->
 <div id="createPopup" class="popup">
   <div class="popup-card">
     <h2>Create Server</h2>
@@ -141,7 +281,7 @@ section{
         <option value="">Select Type</option>
         <option value="Minecraft">Minecraft</option>
         <option value="TeamSpeak3">TeamSpeak3</option>
-        <option value="Htyale">Hytale</option>
+        <option value="Hytale">Hytale</option>
     </select>
 
     <div class="popup-actions">
@@ -151,6 +291,7 @@ section{
   </div>
 </div>
 
+<!-- LIMIT ERROR POPUP -->
 <div id="limitError" class="popup">
   <div class="popup-card">
     <img src="error.png" class="error-icon">
@@ -161,18 +302,15 @@ section{
 </div>
 
 <script>
-<script>
 let serverCount = 0;
 const MAX_SERVERS = 1;
 
 function openPopup(id){
-  const popup = document.getElementById(id);
-  popup.classList.add("active");
+  document.getElementById(id).classList.add("active");
 }
 
 function closePopup(id){
-  const popup = document.getElementById(id);
-  popup.classList.remove("active");
+  document.getElementById(id).classList.remove("active");
 }
 
 function createWorld(){
