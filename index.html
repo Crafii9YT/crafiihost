@@ -18,9 +18,7 @@
   --muted:#9ca3af;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
   margin:0;
@@ -28,7 +26,6 @@ body{
   background:#050507;
   color:var(--text);
   overflow-x:hidden;
-  transition:filter .3s ease;
 }
 
 /* HERO */
@@ -58,12 +55,6 @@ body{
   width:600px;
   max-width:90%;
   filter:drop-shadow(0 0 70px rgba(167,139,250,0.9));
-  animation:float 6s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-20px);}
 }
 
 .hero .banner-text{
@@ -71,13 +62,6 @@ body{
   color:black;
   font-size:1.2rem;
   margin-bottom:30px;
-}
-
-.hero .cta{
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-  justify-content:center;
 }
 
 /* BUTTONS */
@@ -97,24 +81,10 @@ body{
   border:none;
 }
 
-.btn-primary:hover{
-  box-shadow:0 0 25px rgba(96,165,250,0.8);
-  transform:translateY(-3px);
-}
-
 .btn-outline{
   border:1px solid rgba(167,139,250,0.4);
   background:transparent;
   color:#050507;
-}
-
-.btn-outline:hover{
-  background:rgba(167,139,250,0.1);
-  transform:translateY(-3px);
-}
-
-.btn:active{
-  transform:scale(.95);
 }
 
 /* CONTENT */
@@ -123,12 +93,6 @@ section{
   padding:80px 20px;
   max-width:1200px;
   margin:auto;
-  animation:fadeUp 1s ease forwards;
-}
-
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(40px);}
-  to{opacity:1;transform:translateY(0);}
 }
 
 .top-create-btn{
@@ -144,27 +108,113 @@ section{
   color:var(--muted);
 }
 
-/* POPUPS */
+/* SERVER CARD */
+.server-card{
+  background:#0b0b12;
+  padding:25px;
+  border-radius:20px;
+  border:1px solid rgba(167,139,250,0.2);
+  cursor:pointer;
+  max-width:600px;
+  margin:auto;
+  transition:.3s;
+}
+.server-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.7);
+}
+.server-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.status{
+  padding:5px 12px;
+  border-radius:12px;
+  font-size:.8rem;
+}
+.status.online{background:#16a34a;}
+.status.offline{background:#991b1b;}
+
+.resource{margin-top:15px;}
+.bar{
+  background:#111;
+  height:8px;
+  border-radius:6px;
+  overflow:hidden;
+}
+.bar div{
+  height:100%;
+  background:linear-gradient(90deg,#3b82f6,#60a5fa);
+  width:0%;
+  transition:.5s;
+}
+
+/* PANEL */
+.panel-overlay{
+  position:fixed;
+  inset:0;
+  background:#050507;
+  z-index:20000;
+}
+.panel{
+  display:flex;
+  height:100vh;
+}
+.sidebar{
+  width:260px;
+  background:#0b0b12;
+  padding:20px;
+  overflow:auto;
+}
+.sidebar h4{
+  margin-top:25px;
+  font-size:.8rem;
+  color:#9ca3af;
+}
+.sidebar button{
+  display:block;
+  width:100%;
+  background:none;
+  border:none;
+  color:#e5e7eb;
+  text-align:left;
+  padding:8px 0;
+  cursor:pointer;
+}
+.sidebar button:hover{
+  color:#60a5fa;
+}
+.panel-content{
+  flex:1;
+  padding:40px;
+  overflow:auto;
+}
+.close-panel{
+  margin-top:30px;
+  color:#60a5fa;
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+
+/* POPUPS (unchanged) */
 .popup{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(0px);
   display:flex;
   align-items:center;
   justify-content:center;
   z-index:10000;
   opacity:0;
   pointer-events:none;
-  transition:.4s ease;
+  transition:.3s;
 }
-
 .popup.active{
   opacity:1;
   pointer-events:all;
-  backdrop-filter:blur(8px);
 }
-
 .popup-card{
   background:var(--card);
   padding:35px;
@@ -172,18 +222,8 @@ section{
   width:420px;
   max-width:90%;
   border:1px solid rgba(167,139,250,0.25);
-  box-shadow:0 30px 100px rgba(0,0,0,0.9);
   text-align:center;
-  transform:scale(.7) translateY(60px);
-  opacity:0;
-  transition:.45s cubic-bezier(.68,-0.55,.27,1.55);
 }
-
-.popup.active .popup-card{
-  transform:scale(1) translateY(0);
-  opacity:1;
-}
-
 .popup-card input,
 .popup-card select{
   width:100%;
@@ -195,52 +235,11 @@ section{
   color:var(--text);
 }
 
-/* SHAKE */
-@keyframes shake{
-  0%,100%{transform:translateX(0);}
-  20%{transform:translateX(-8px);}
-  40%{transform:translateX(8px);}
-  60%{transform:translateX(-6px);}
-  80%{transform:translateX(6px);}
-}
-
-.shake{
-  animation:shake .4s ease;
-}
-
-/* ERROR ICON */
-.error-icon{
-  width:80px;
-  height:80px;
-  animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.1);}
-  100%{transform:scale(1);}
-}
-
-/* RESPONSIVE bleibt unverändert */
-@media(max-width:1024px){
-  .hero{height:500px;}
-  .hero img{width:400px;}
-  section{padding:60px 15px;}
-}
-
-@media(max-width:768px){
-  .hero{height:420px;}
-  .hero img{width:260px;}
-  .btn{width:100%;}
-  .top-create-btn{position:static;text-align:center;margin-bottom:30px;}
-  .popup-card{width:95%;padding:25px;}
-}
-
-@media(max-width:480px){
-  .hero{height:350px;}
-  .hero img{width:200px;}
-  .hero .banner-text{font-size:.95rem;}
-  .center-empty{margin:100px 0;}
+footer{
+  text-align:center;
+  padding:40px;
+  color:var(--text);
+  border-top:1px solid rgba(167,139,250,0.15);
 }
 </style>
 </head>
@@ -268,7 +267,7 @@ section{
 
 </section>
 
-<footer style="text-align:center;padding:40px;color:var(--text);border-top:1px solid rgba(167,139,250,0.15);">
+<footer>
   © 2026 <span style="color:var(--primary);font-weight:600;">CrafiiHost</span>
 </footer>
 
@@ -283,66 +282,915 @@ section{
         <option value="TeamSpeak3">TeamSpeak3</option>
         <option value="Hytale">Hytale</option>
     </select>
-
-    <div class="popup-actions">
-      <button class="btn btn-primary" onclick="createWorld()">Erstellen</button>
-      <button class="btn btn-outline" onclick="closePopup('createPopup')">Abbrechen</button>
-    </div>
-  </div>
-</div>
-
-<!-- LIMIT ERROR POPUP -->
-<div id="limitError" class="popup">
-  <div class="popup-card">
-    <img src="error.png" class="error-icon">
-    <h2>Error</h2>
-    <p>Maximum Server Amount reached.</p>
-    <button class="btn btn-primary" onclick="closePopup('limitError')">Close</button>
+    <button class="btn btn-primary" onclick="createServer()">Erstellen</button>
+    <button class="btn btn-outline" onclick="closePopup('createPopup')">Abbrechen</button>
   </div>
 </div>
 
 <script>
-let serverCount = 0;
-const MAX_SERVERS = 1;
 
-function openPopup(id){
-  document.getElementById(id).classList.add("active");
-}
+/* SERVER STATE */
+const LIMITS = { cpu:200, ram:9, disk:50 };
+let server = { created:false, online:false, cpu:0, ram:0, disk:2.4, name:"" };
+let interval;
 
-function closePopup(id){
-  document.getElementById(id).classList.remove("active");
-}
+/* POPUP */
+function openPopup(id){document.getElementById(id).classList.add("active");}
+function closePopup(id){document.getElementById(id).classList.remove("active");}
 
-function createWorld(){
+/* CREATE */
+function createServer(){
   const name = document.getElementById("name").value.trim();
   const type = document.getElementById("type").value;
-  const card = document.querySelector("#createPopup .popup-card");
+  if(!name || !type) return;
 
-  if(!name || !type){
-    card.classList.add("shake");
-    setTimeout(()=>card.classList.remove("shake"),400);
-    return;
-  }
-
-  if(serverCount >= MAX_SERVERS){
+  if(server.created){
     closePopup("createPopup");
-    setTimeout(()=>openPopup("limitError"),300);
     return;
   }
 
-  serverCount++;
-
+  server.created=true;
+  server.name=name;
   closePopup("createPopup");
+  renderCard();
+}
 
-  const empty = document.querySelector(".center-empty");
-  empty.innerHTML = `
-    <div style="animation:fadeUp .6s ease forwards;">
-      <strong>${name}</strong><br>
-      <span style="color:var(--muted)">${type}</span>
+/* CARD */
+function renderCard(){
+  document.querySelector(".center-empty").innerHTML=`
+    <div class="server-card" onclick="openPanel()">
+      <div class="server-header">
+        <h3>${server.name}</h3>
+        <span class="status offline">OFFLINE</span>
+      </div>
+
+      <div class="resource">
+        <label>CPU</label>
+        <div class="bar"><div id="cpuBar"></div></div>
+        <small id="cpuText">0% / 200%</small>
+      </div>
+
+      <div class="resource">
+        <label>RAM</label>
+        <div class="bar"><div id="ramBar"></div></div>
+        <small id="ramText">0 GB / 9 GB</small>
+      </div>
+
+      <div class="resource">
+        <label>DISK</label>
+        <div class="bar"><div id="diskBar"></div></div>
+        <small>${server.disk} GB / 50 GB</small>
+      </div>
     </div>
   `;
 }
-</script>
 
+/* PANEL */
+function openPanel(){
+  document.body.innerHTML+=`
+  <div class="panel-overlay" id="panel">
+    <div class="panel">
+      <aside class="sidebar">
+        <h2>${server.name}</h2>
+        <h4>General</h4>
+        <button onclick="showPower()">Power</button>
+        <h4>More coming in Part 2</h4>
+        <button class="close-panel" onclick="closePanel()">← Back</button>
+      </aside>
+      <main class="panel-content" id="content"></main>
+    </div>
+  </div>`;
+  showPower();
+}
+
+function closePanel(){document.getElementById("panel").remove();}
+
+/* POWER */
+function showPower(){
+  document.getElementById("content").innerHTML=`
+    <h2>Power</h2>
+    <p>Status: ${server.online?"ONLINE":"OFFLINE"}</p>
+    <button onclick="start()">Start</button>
+    <button onclick="stop()">Stop</button>
+  `;
+}
+
+function start(){
+  if(server.online) return;
+  server.online=true;
+  interval=setInterval(()=>{
+    server.cpu=Math.min(LIMITS.cpu, server.cpu+Math.random()*15);
+    server.ram=Math.min(LIMITS.ram, server.ram+Math.random()*0.5);
+    updateBars();
+  },1000);
+  renderCard();
+}
+
+function stop(){
+  server.online=false;
+  clearInterval(interval);
+  server.cpu=0;
+  server.ram=0;
+  updateBars();
+  renderCard();
+}
+
+function updateBars(){
+  if(!document.getElementById("cpuBar")) return;
+  document.getElementById("cpuBar").style.width=(server.cpu/LIMITS.cpu*100)+"%";
+  document.getElementById("ramBar").style.width=(server.ram/LIMITS.ram*100)+"%";
+  document.getElementById("cpuText").innerText=server.cpu.toFixed(1)+"% / 200%";
+  document.getElementById("ramText").innerText=server.ram.toFixed(2)+" GB / 9 GB";
+}
+
+</script>
+<script>
+
+/* ==============================
+   SYSTEM STORAGE
+============================== */
+
+server.audit = [];
+server.databases = [];
+server.backups = [];
+server.ports = [{port:25565}];
+server.splits = [];
+
+function logAudit(text){
+    server.audit.push({
+        time:new Date().toLocaleTimeString(),
+        text:text
+    });
+}
+
+/* ==============================
+   SIDEBAR FULL ROUTER
+============================== */
+
+function openPanel(){
+  document.body.innerHTML+=`
+  <div class="panel-overlay" id="panel">
+    <div class="panel">
+      <aside class="sidebar">
+        <h2>${server.name}</h2>
+
+        <h4>General</h4>
+        <button onclick="showPower()">Power</button>
+        <button onclick="showConsole()">Console</button>
+        <button onclick="showSettings()">Settings</button>
+        <button onclick="showAudit()">Audit-Log</button>
+
+        <h4>Management</h4>
+        <button onclick="showFiles()">Files</button>
+        <button onclick="showDatabases()">Databases</button>
+        <button onclick="showBackups()">Backups</button>
+        <button onclick="showNetwork()">Network</button>
+
+        <h4>Configuration</h4>
+        <button onclick="showSchedules()">Schedules</button>
+        <button onclick="showUsers()">Users</button>
+        <button onclick="showStartup()">Startup</button>
+        <button onclick="showSplitter()">Splitter</button>
+
+        <button class="close-panel" onclick="closePanel()">← Back</button>
+      </aside>
+      <main class="panel-content" id="content"></main>
+    </div>
+  </div>`;
+  showPower();
+}
+
+/* ==============================
+   CONSOLE (REALISTIC BOOT)
+============================== */
+
+let consoleInterval;
+
+function showConsole(){
+    document.getElementById("content").innerHTML=`
+        <h2>Console</h2>
+        <div id="consoleBox" style="
+            background:black;
+            color:#00ff00;
+            padding:20px;
+            height:400px;
+            overflow:auto;
+            font-family:monospace;
+            border-radius:10px;
+        "></div>
+    `;
+}
+
+function start(){
+  if(server.online) return;
+  server.online=true;
+  logAudit("Server started");
+
+  showPower();
+
+  showConsole();
+
+  const box=document.getElementById("consoleBox");
+  const logs=[
+    "[Server thread/INFO]: Starting minecraft server version 1.20.4",
+    "[Server thread/INFO]: Loading properties",
+    "[Server thread/INFO]: Default game type: SURVIVAL",
+    "[Server thread/INFO]: Preparing level \"world\"",
+    "[Server thread/INFO]: Preparing start region",
+    "[Server thread/INFO]: Done (3.245s)! For help, type \"help\""
+  ];
+
+  let i=0;
+  consoleInterval=setInterval(()=>{
+    if(i<logs.length){
+        box.innerHTML+=logs[i]+"<br>";
+        box.scrollTop=box.scrollHeight;
+        i++;
+    }
+  },800);
+
+  interval=setInterval(()=>{
+    server.cpu=Math.min(LIMITS.cpu, server.cpu+Math.random()*10);
+    server.ram=Math.min(LIMITS.ram, server.ram+Math.random()*0.3);
+    updateBars();
+  },1000);
+}
+
+function stop(){
+  server.online=false;
+  clearInterval(interval);
+  clearInterval(consoleInterval);
+  server.cpu=0;
+  server.ram=0;
+  logAudit("Server stopped");
+  updateBars();
+  showPower();
+}
+
+/* ==============================
+   AUDIT LOG
+============================== */
+
+function showAudit(){
+    let html="<h2>Audit Log</h2>";
+    server.audit.forEach(entry=>{
+        html+=`<p>[${entry.time}] ${entry.text}</p>`;
+    });
+    document.getElementById("content").innerHTML=html;
+}
+
+/* ==============================
+   DATABASES (LIMIT 1)
+============================== */
+
+function showDatabases(){
+    let html="<h2>Databases</h2>";
+    html+=`<p>Limit: 1</p>`;
+
+    server.databases.forEach(db=>{
+        html+=`<p>${db}</p>`;
+    });
+
+    html+=`<button onclick="createDatabase()">Create Database</button>`;
+    document.getElementById("content").innerHTML=html;
+}
+
+function createDatabase(){
+    if(server.databases.length>=1){
+        alert("Database limit reached.");
+        return;
+    }
+    const name="db_"+Math.floor(Math.random()*1000);
+    server.databases.push(name);
+    logAudit("Database created: "+name);
+    showDatabases();
+}
+
+/* ==============================
+   BACKUPS (LIMIT 5)
+============================== */
+
+function showBackups(){
+    let html="<h2>Backups</h2><p>Limit: 5</p>";
+
+    server.backups.forEach(b=>{
+        html+=`<p>${b}</p>`;
+    });
+
+    html+=`<button onclick="createBackup()">Create Backup</button>`;
+    document.getElementById("content").innerHTML=html;
+}
+
+function createBackup(){
+    if(server.backups.length>=5){
+        alert("Backup limit reached.");
+        return;
+    }
+    const name="backup_"+(server.backups.length+1);
+    server.backups.push(name);
+    logAudit("Backup created: "+name);
+    showBackups();
+}
+
+/* ==============================
+   NETWORK (LIMIT 2)
+============================== */
+
+function showNetwork(){
+    let html="<h2>Network</h2><p>Port Limit: 2</p>";
+
+    server.ports.forEach(p=>{
+        html+=`<p>Port: ${p.port}</p>`;
+    });
+
+    html+=`<button onclick="addPort()">Add Port</button>`;
+    document.getElementById("content").innerHTML=html;
+}
+
+function addPort(){
+    if(server.ports.length>=2){
+        alert("Port limit reached.");
+        return;
+    }
+    const newPort=25566+server.ports.length;
+    server.ports.push({port:newPort});
+    logAudit("Port created: "+newPort);
+    showNetwork();
+}
+
+/* ==============================
+   SCHEDULES (LIMIT 0)
+============================== */
+
+function showSchedules(){
+    document.getElementById("content").innerHTML=`
+        <h2>Schedules</h2>
+        <p>Limit: 0</p>
+        <button onclick="alert('Schedule limit reached.')">Create Schedule</button>
+    `;
+}
+
+/* ==============================
+   USERS (LIMIT 0)
+============================== */
+
+function showUsers(){
+    document.getElementById("content").innerHTML=`
+        <h2>Users</h2>
+        <p>Limit: 0</p>
+        <button onclick="alert('User limit reached.')">Add User</button>
+    `;
+}
+
+/* ==============================
+   STARTUP
+============================== */
+
+function showStartup(){
+    document.getElementById("content").innerHTML=`
+        <h2>Startup</h2>
+        <p>Docker Image:</p>
+        <input value="ghcr.io/pterodactyl/yolks:java_17">
+        <p>Start Command:</p>
+        <input value="java -Xms128M -Xmx1024M -jar server.jar">
+    `;
+}
+
+/* ==============================
+   SPLITTER (PREPARED)
+============================== */
+
+function showSplitter(){
+    let html="<h2>Splitter</h2><p>Limit: 3</p>";
+
+    server.splits.forEach(s=>{
+        html+=`<p>Split ${s.cpu}% CPU | ${s.ram}GB RAM</p>`;
+    });
+
+    html+=`<button onclick="createSplit()">Create Split</button>`;
+    document.getElementById("content").innerHTML=html;
+}
+
+function createSplit(){
+    if(server.splits.length>=3){
+        alert("Split limit reached.");
+        return;
+    }
+    server.splits.push({cpu:20, ram:1});
+    logAudit("Resource split created.");
+    showSplitter();
+}
+
+/* ==============================
+   PLACEHOLDER FILES & SETTINGS
+============================== */
+
+function showFiles(){
+    document.getElementById("content").innerHTML=`
+        <h2>Files</h2>
+        <p>server.jar</p>
+        <p>eula.txt</p>
+        <p>server.properties</p>
+        <p>logs/</p>
+        <button>Upload</button>
+        <button>Create File</button>
+        <button>Create Folder</button>
+    `;
+}
+
+function showSettings(){
+    document.getElementById("content").innerHTML=`
+        <h2>Settings</h2>
+        <p>Server Name: ${server.name}</p>
+        <button onclick="alert('Settings saved.')">Save</button>
+    `;
+}
+
+</script>
+<script>
+
+/* ============================
+   VIRTUAL FILE SYSTEM
+============================ */
+
+server.files = [
+    {name:"server.jar", type:"file", content:"Minecraft Server Binary"},
+    {name:"eula.txt", type:"file", content:"eula=true"},
+    {name:"logs", type:"folder", children:[
+        {name:"latest.log", type:"file", content:"Server starting..."}
+    ]},
+    {name:"server.properties", type:"file", content:"spawn-protection=16"}
+];
+
+let filePath = [];
+
+/* ============================
+   FILE MANAGER
+============================ */
+
+function showFiles(){
+
+    let current = getCurrentFolder();
+
+    let html = `<h2>File Manager</h2>
+                <button onclick="createFile()">+ File</button>
+                <button onclick="createFolder()">+ Folder</button>
+                <hr>`;
+
+    current.forEach(file=>{
+        if(file.type==="folder"){
+            html+=`
+            <p onclick="enterFolder('${file.name}')" 
+            style="cursor:pointer;color:#60a5fa">
+            📁 ${file.name}
+            </p>`;
+        }
+        else{
+            html+=`
+            <p>
+            📄 ${file.name}
+            <button onclick="editFile('${file.name}')">Edit</button>
+            <button onclick="downloadFile('${file.name}')">Download</button>
+            </p>
+            `;
+        }
+    });
+
+    html+=`<br><button onclick="goBackFolder()">⬅ Back</button>`;
+
+    document.getElementById("content").innerHTML=html;
+}
+
+/* ============================
+   NAVIGATION
+============================ */
+
+function getCurrentFolder(){
+    let folder = server.files;
+
+    for(let p of filePath){
+        let found = folder.find(f=>f.name===p && f.type==="folder");
+        if(found) folder = found.children;
+    }
+
+    return folder;
+}
+
+function enterFolder(name){
+    filePath.push(name);
+    showFiles();
+}
+
+function goBackFolder(){
+    filePath.pop();
+    showFiles();
+}
+
+/* ============================
+   FILE OPERATIONS
+============================ */
+
+function createFile(){
+    let name = prompt("File name?");
+    if(!name) return;
+
+    let current = getCurrentFolder();
+
+    current.push({
+        name:name,
+        type:"file",
+        content:"New File"
+    });
+
+    logAudit("File created: "+name);
+    showFiles();
+}
+
+function createFolder(){
+    let name = prompt("Folder name?");
+    if(!name) return;
+
+    let current = getCurrentFolder();
+
+    current.push({
+        name:name,
+        type:"folder",
+        children:[]
+    });
+
+    logAudit("Folder created: "+name);
+    showFiles();
+}
+
+function editFile(name){
+
+    let current = getCurrentFolder();
+    let file = current.find(f=>f.name===name);
+
+    if(!file) return;
+
+    let newContent = prompt("Edit file:", file.content);
+    if(newContent!==null){
+        file.content = newContent;
+        logAudit("Edited file: "+name);
+    }
+}
+
+function downloadFile(name){
+    let current = getCurrentFolder();
+    let file = current.find(f=>f.name===name);
+
+    if(!file) return;
+
+    alert("Downloading "+name+"\n\n"+file.content);
+}
+
+/* ============================
+   BACKUPS DOWNLOAD SIM
+============================ */
+
+function downloadBackup(name){
+    alert("Downloading backup: "+name);
+}
+
+</script>
+<script>
+
+/* =============================
+   REALTIME GRAPH SIMULATION
+============================= */
+
+function showPower(){
+
+    document.getElementById("content").innerHTML=`
+        <h2>Power Control</h2>
+
+        <p>Status: ${server.online?"🟢 ONLINE":"🔴 OFFLINE"}</p>
+
+        <button onclick="start()">Start Server</button>
+        <button onclick="stop()">Stop Server</button>
+
+        <h3>Resources</h3>
+
+        <div class="bar"><div id="cpuBar"></div></div>
+        <small id="cpuText"></small>
+
+        <div class="bar"><div id="ramBar"></div></div>
+        <small id="ramText"></small>
+    `;
+}
+
+/* =============================
+   REALTIME CONSOLE STREAM
+============================= */
+
+let consoleStream;
+
+function showConsole(){
+
+    document.getElementById("content").innerHTML=`
+    <h2>Console</h2>
+
+    <div id="consoleBox"
+    style="background:black;
+    color:#00ff00;
+    padding:20px;
+    height:420px;
+    overflow:auto;
+    font-family:monospace;">
+    </div>
+
+    <button onclick="startConsoleStream()">Start Stream</button>
+    <button onclick="stopConsoleStream()">Stop Stream</button>
+    `;
+}
+
+function startConsoleStream(){
+
+    const box = document.getElementById("consoleBox");
+
+    const logs = [
+        "Loading world...",
+        "Preparing spawn region...",
+        "Loading plugins...",
+        "Starting server thread...",
+        "Server is now ready."
+    ];
+
+    let i = 0;
+
+    consoleStream = setInterval(()=>{
+        if(i >= logs.length){
+            box.innerHTML += "[INFO] Server running...<br>";
+        }else{
+            box.innerHTML += logs[i]+"<br>";
+            i++;
+        }
+
+        box.scrollTop = box.scrollHeight;
+
+    },900);
+}
+
+function stopConsoleStream(){
+    clearInterval(consoleStream);
+}
+
+/* =============================
+   NETWORK PORT EDITOR
+============================= */
+
+function showNetwork(){
+
+    let html = `<h2>Network Ports</h2>
+                <p>Limit: 2 Ports</p>`;
+
+    server.ports.forEach((p,i)=>{
+        html+=`
+        <p>
+        Port: ${p.port}
+        <button onclick="removePort(${i})">Delete</button>
+        </p>
+        `;
+    });
+
+    html+=`<button onclick="addPort()">Add Port</button>`;
+
+    document.getElementById("content").innerHTML=html;
+}
+
+function removePort(index){
+    if(index===0) return;
+
+    server.ports.splice(index,1);
+    logAudit("Port removed");
+    showNetwork();
+}
+
+/* =============================
+   DRAG & DROP FILE UPLOAD
+============================= */
+
+function enableUploadZone(){
+
+    document.getElementById("content").innerHTML=`
+        <h2>Upload Files</h2>
+
+        <div id="dropZone"
+        style="border:2px dashed #60a5fa;
+        padding:60px;
+        text-align:center;">
+        Drop files here
+        </div>
+    `;
+
+    const zone = document.getElementById("dropZone");
+
+    zone.ondragover = e=>{
+        e.preventDefault();
+    };
+
+    zone.ondrop = e=>{
+        e.preventDefault();
+
+        alert("File uploaded (simulation)");
+        logAudit("File uploaded");
+    };
+}
+
+/* =============================
+   SPLITTER REAL RESOURCE SHARE
+============================= */
+
+function showSplitter(){
+
+    let html = `<h2>Splitter</h2>
+                <p>Max Splits: 3</p>`;
+
+    server.splits.forEach((s,i)=>{
+        html+=`
+        <p>
+        Split ${i+1} |
+        CPU ${s.cpu}% |
+        RAM ${s.ram}GB
+        </p>`;
+    });
+
+    html+=`
+    <button onclick="createSplit()">Create Split</button>
+    `;
+
+    document.getElementById("content").innerHTML=html;
+}
+
+function createSplit(){
+
+    if(server.splits.length >= 3){
+        alert("Split limit reached");
+        return;
+    }
+
+    server.splits.push({
+        cpu:Math.floor(Math.random()*30)+10,
+        ram:(Math.random()*2).toFixed(1)
+    });
+
+    logAudit("Resource split created");
+    showSplitter();
+}
+
+</script>
+<script>
+
+/* ==============================
+   RESOURCE GRAPH CHARTS
+============================== */
+
+let graphInterval;
+
+function showGraphs(){
+
+    document.getElementById("content").innerHTML=`
+    <h2>Performance Graphs</h2>
+
+    <canvas id="graph" width="500" height="250"
+    style="width:100%;background:#000;border-radius:15px;"></canvas>
+    `;
+
+    const canvas = document.getElementById("graph");
+    const ctx = canvas.getContext("2d");
+
+    let data = [];
+
+    graphInterval = setInterval(()=>{
+
+        if(data.length > 30) data.shift();
+
+        data.push(server.cpu);
+
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        ctx.beginPath();
+
+        data.forEach((v,i)=>{
+            let x = i*(canvas.width/30);
+            let y = canvas.height - (v/200)*canvas.height;
+
+            if(i===0) ctx.moveTo(x,y);
+            else ctx.lineTo(x,y);
+        });
+
+        ctx.strokeStyle="#60a5fa";
+        ctx.stroke();
+
+    },800);
+}
+
+/* ==============================
+   SERVER BOOT ANIMATION
+============================== */
+
+function bootSequence(){
+
+    const content = document.getElementById("content");
+
+    content.innerHTML=`
+    <h2>Boot Sequence</h2>
+    <div id="bootLog"
+    style="background:black;
+    color:#00ff00;
+    height:400px;
+    overflow:auto;
+    padding:20px;
+    font-family:monospace;"></div>
+    `;
+
+    const box = document.getElementById("bootLog");
+
+    const bootLogs = [
+        "Initializing Kernel...",
+        "Loading Runtime...",
+        "Checking Filesystem...",
+        "Allocating Memory...",
+        "Starting Services...",
+        "Server Online!"
+    ];
+
+    let i = 0;
+
+    let bootInt = setInterval(()=>{
+        if(i >= bootLogs.length){
+            clearInterval(bootInt);
+            return;
+        }
+
+        box.innerHTML += bootLogs[i]+"<br>";
+        box.scrollTop = box.scrollHeight;
+
+        i++;
+
+    },1000);
+}
+
+/* ==============================
+   PERMISSION SIMULATION
+============================== */
+
+server.permissions = [];
+
+function showUsers(){
+
+    let html = `
+    <h2>Users</h2>
+    <p>Limit: 0</p>
+    <button onclick="alert('User limit reached')">
+    Add User
+    </button>
+    `;
+
+    document.getElementById("content").innerHTML = html;
+}
+
+/* ==============================
+   BACKUP FILE DOWNLOAD SIM
+============================== */
+
+function showBackups(){
+
+    let html = `
+    <h2>Backups</h2>
+    <p>Limit: 5</p>
+    `;
+
+    server.backups.forEach(b=>{
+        html+=`
+        <p>
+        📦 ${b}
+        <button onclick="downloadBackup('${b}')">
+        Download
+        </button>
+        </p>
+        `;
+    });
+
+    html+=`<button onclick="createBackup()">Create Backup</button>`;
+
+    document.getElementById("content").innerHTML = html;
+}
+
+function downloadBackup(name){
+    alert("Downloading backup file:\n"+name);
+}
+
+/* ==============================
+   FINAL UI POLISH EFFECTS
+============================== */
+
+document.addEventListener("mousemove",e=>{
+    document.body.style.backgroundPosition =
+        `${e.clientX/50}px ${e.clientY/50}px`;
+});
+
+</script>
 </body>
 </html>
