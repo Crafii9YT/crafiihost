@@ -198,41 +198,42 @@ section{
   cursor:pointer;
 }
 
-/* POPUPS (unchanged) */
-.popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.75);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:10000;
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-}
-.popup.active{
-  opacity:1;
-  pointer-events:all;
-}
+/* MODERN GLASS POPUPS */
+
 .popup-card{
-  background:var(--card);
-  padding:35px;
-  border-radius:24px;
-  width:420px;
-  max-width:90%;
-  border:1px solid rgba(167,139,250,0.25);
-  text-align:center;
+  backdrop-filter: blur(18px);
+  background: rgba(11,11,18,0.8);
+  border:1px solid rgba(96,165,250,.3);
 }
-.popup-card input,
-.popup-card select{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border-radius:12px;
-  border:1px solid rgba(167,139,250,0.2);
-  background:#050507;
-  color:var(--text);
+
+.popup input, .popup select{
+  border-radius:14px;
+  background:#0b0b12;
+}
+
+/* MODERN BUTTONS */
+
+button{
+  border-radius:14px;
+  transition:.25s;
+}
+
+button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 25px rgba(96,165,250,.5);
+}
+
+.server-card{
+background:rgba(11,11,18,.7);
+backdrop-filter:blur(20px);
+border-radius:22px;
+padding:25px;
+border:1px solid rgba(96,165,250,.25);
+transition:.3s;
+}
+
+.panel{
+background:linear-gradient(135deg,#050507,#0b0b12);
 }
 
 footer{
@@ -289,6 +290,10 @@ footer{
 
 <script>
 
+/* ============================
+   Teil 1
+============================ */
+
 /* SERVER STATE */
 const LIMITS = { cpu:200, ram:9, disk:50 };
 let server = { created:false, online:false, cpu:0, ram:0, disk:2.4, name:"" };
@@ -317,32 +322,36 @@ function createServer(){
 
 /* CARD */
 function renderCard(){
-  document.querySelector(".center-empty").innerHTML=`
-    <div class="server-card" onclick="openPanel()">
-      <div class="server-header">
-        <h3>${server.name}</h3>
-        <span class="status offline">OFFLINE</span>
-      </div>
 
-      <div class="resource">
-        <label>CPU</label>
-        <div class="bar"><div id="cpuBar"></div></div>
-        <small id="cpuText">0% / 200%</small>
-      </div>
+let list = "";
 
-      <div class="resource">
-        <label>RAM</label>
-        <div class="bar"><div id="ramBar"></div></div>
-        <small id="ramText">0 GB / 9 GB</small>
-      </div>
+if(server.created){
 
-      <div class="resource">
-        <label>DISK</label>
-        <div class="bar"><div id="diskBar"></div></div>
-        <small>${server.disk} GB / 50 GB</small>
-      </div>
-    </div>
-  `;
+list += `
+<div class="server-card" onclick="openPanel()">
+<h3>${server.name}</h3>
+<p>Type: ${server.type}</p>
+<p>Status: ${server.online?"ONLINE":"OFFLINE"}</p>
+</div>
+`;
+
+}
+
+/* Split Servers anzeigen */
+
+server.splits.forEach((s,i)=>{
+
+list += `
+<div class="server-card" style="opacity:.8">
+<h4>Split Server ${i+1}</h4>
+<p>CPU ${s.cpu}% | RAM ${s.ram}GB</p>
+</div>
+`;
+
+});
+
+document.querySelector(".center-empty").innerHTML = list || "No server found";
+
 }
 
 /* PANEL */
@@ -406,6 +415,10 @@ function updateBars(){
 </script>
 <script>
 
+
+/* ============================
+   Teil 2
+============================ */
 /* ==============================
    SYSTEM STORAGE
 ============================== */
@@ -672,13 +685,35 @@ function showSplitter(){
 }
 
 function createSplit(){
-    if(server.splits.length>=3){
-        alert("Split limit reached.");
-        return;
-    }
-    server.splits.push({cpu:20, ram:1});
-    logAudit("Resource split created.");
-    showSplitter();
+
+let cpu = prompt("CPU % to allocate?");
+let ram = prompt("RAM GB to allocate?");
+
+cpu = Number(cpu);
+ram = Number(ram);
+
+if(
+cpu > (SERVER_LIMITS.cpu - server.cpu) ||
+ram > (SERVER_LIMITS.ram - server.ram)
+){
+alert("Not enough master resources!");
+return;
+}
+
+if(server.splits.length >= 3){
+alert("Split limit reached");
+return;
+}
+
+server.splits.push({cpu, ram});
+
+server.cpu += cpu;
+server.ram += ram;
+
+logAudit("Split server created");
+
+renderCard();
+showSplitter();
 }
 
 /* ==============================
@@ -699,16 +734,43 @@ function showFiles(){
 }
 
 function showSettings(){
-    document.getElementById("content").innerHTML=`
-        <h2>Settings</h2>
-        <p>Server Name: ${server.name}</p>
-        <button onclick="alert('Settings saved.')">Save</button>
-    `;
+
+let html = `
+<h2>Settings</h2>
+
+<p>Server Name</p>
+<input id="setName" value="${server.name}">
+
+<p>Server Type</p>
+<select id="setType">
+<option>Minecraft</option>
+<option>TeamSpeak3</option>
+<option>Hytale</option>
+</select>
+
+<br><br>
+
+<button onclick="saveSettings()">Save</button>
+`;
+
+document.getElementById("content").innerHTML = html;
+}
+
+function saveSettings(){
+
+server.name = document.getElementById("setName").value;
+server.type = document.getElementById("setType").value;
+
+renderCard();
+alert("Settings saved");
 }
 
 </script>
 <script>
-
+/* ============================
+   Teil 3
+============================ */
+  
 /* ============================
    VIRTUAL FILE SYSTEM
 ============================ */
@@ -855,6 +917,9 @@ function downloadBackup(name){
 
 </script>
 <script>
+/* ============================
+   Teil 4
+============================ */
 
 /* =============================
    REALTIME GRAPH SIMULATION
@@ -1041,6 +1106,9 @@ function createSplit(){
 
 </script>
 <script>
+/* ============================
+   Teil 5
+============================ */
 
 /* ==============================
    RESOURCE GRAPH CHARTS
@@ -1190,7 +1258,6 @@ document.addEventListener("mousemove",e=>{
     document.body.style.backgroundPosition =
         `${e.clientX/50}px ${e.clientY/50}px`;
 });
-
 </script>
 </body>
 </html>
