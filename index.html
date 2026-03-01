@@ -32,218 +32,74 @@ body{
 }
 
 /* HERO */
-.hero{
-  position:relative;
-  height:700px;
-  background:url("Banner.png") center/cover no-repeat;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  bottom:0;
-  left:0;
-  width:100%;
-  height:150px;
-  background:linear-gradient(to bottom,rgba(5,5,7,0) 0%,#050507 100%);
-}
-
+/* HERO FLOAT */
 .hero img{
-  width:600px;
-  max-width:90%;
-  filter:drop-shadow(0 0 70px rgba(167,139,250,0.9));
+  animation:float 6s ease-in-out infinite;
 }
 
-.hero .banner-text{
-  max-width:720px;
-  color:black;
-  font-size:1.2rem;
-  margin-bottom:30px;
+@keyframes float{
+  0%,100%{transform:translateY(0px);}
+  50%{transform:translateY(-20px);}
 }
 
-.hero .cta{
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-  justify-content:center;
+/* BUTTON HOVER GLOW */
+.btn-primary:hover{
+  box-shadow:0 0 25px rgba(96,165,250,0.8);
+  transform:translateY(-3px);
 }
 
-/* BUTTONS */
-.btn{
-  padding:16px 28px;
-  font-size:1.1rem;
-  border-radius:14px;
-  font-weight:600;
-  text-decoration:none;
-  transition:.25s;
-  cursor:pointer;
+.btn-outline:hover{
+  background:rgba(167,139,250,0.1);
+  transform:translateY(-3px);
 }
 
-.btn-primary{
-  background:linear-gradient(135deg,var(--primary),var(--primary-glow));
-  color:#050507;
-  border:none;
+/* BUTTON CLICK */
+.btn:active{
+  transform:scale(.95);
 }
 
-.btn-outline{
-  border:1px solid rgba(167,139,250,0.4);
-  background:transparent;
-  color:#050507;
-}
-
-/* CONTENT */
+/* SECTION FADE IN */
 section{
-  position:relative;
-  padding:80px 20px;
-  max-width:1200px;
-  margin:auto;
+  animation:fadeUp 1s ease forwards;
 }
 
-.top-create-btn{
-  position:absolute;
-  top:20px;
-  right:20px;
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
-.center-empty{
-  text-align:center;
-  margin:160px 0 80px;
-  font-size:1.2rem;
-  color:var(--muted);
+/* POPUP SHAKE */
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-8px);}
+  40%{transform:translateX(8px);}
+  60%{transform:translateX(-6px);}
+  80%{transform:translateX(6px);}
 }
 
-/* POPUPS */
+.shake{
+  animation:shake .4s ease;
+}
+
+/* POPUP FADE BG */
 .popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(0px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:10000;
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
+  transition:opacity .4s ease, backdrop-filter .4s ease;
 }
 
-.popup.active{
-  opacity:1;
-  pointer-events:all;
-  backdrop-filter:blur(8px);
-}
-
+/* POPUP CARD SCALE */
 .popup-card{
-  background:var(--card);
-  padding:35px;
-  border-radius:24px;
-  width:420px;
-  max-width:90%;
-  border:1px solid rgba(167,139,250,0.25);
-  box-shadow:0 30px 100px rgba(0,0,0,0.9);
-  text-align:center;
-  transform:scale(.7) translateY(60px);
-  opacity:0;
-  transition:.4s cubic-bezier(.68,-0.55,.27,1.55);
+  transition:.45s cubic-bezier(.68,-0.55,.27,1.55);
 }
 
-.popup.active .popup-card{
-  transform:scale(1) translateY(0);
-  opacity:1;
-}
-
-.popup-card input{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border-radius:12px;
-  border:1px solid rgba(167,139,250,0.2);
-  background:#050507;
-  color:var(--text);
-}
-
-.popup-actions{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
-/* ERROR */
+/* ERROR ICON PULSE */
 .error-icon{
-  width:80px;
-  height:80px;
+  animation:pulse 2s infinite;
 }
 
-/* MOBILE RESPONSIVE */
-
-@media(max-width:1024px){
-  .hero{
-    height:500px;
-  }
-
-  .hero img{
-    width:400px;
-  }
-
-  section{
-    padding:60px 15px;
-  }
-}
-
-@media(max-width:768px){
-  .hero{
-    height:420px;
-  }
-
-  .hero img{
-    width:260px;
-  }
-
-  .hero .cta{
-    flex-direction:column;
-    width:90%;
-  }
-
-  .btn{
-    width:100%;
-    text-align:center;
-  }
-
-  .top-create-btn{
-    position:static;
-    text-align:center;
-    margin-bottom:30px;
-  }
-
-  .popup-card{
-    width:95%;
-    padding:25px;
-  }
-}
-
-@media(max-width:480px){
-  .hero{
-    height:350px;
-  }
-
-  .hero img{
-    width:200px;
-  }
-
-  .hero .banner-text{
-    font-size:.95rem;
-  }
-
-  .center-empty{
-    margin:100px 0;
-  }
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.1);}
+  100%{transform:scale(1);}
 }
 </style>
 </head>
@@ -283,9 +139,9 @@ section{
     <input type="text" id="name" placeholder="Server Name">
     <select id="type">
         <option value="">Select Type</option>
-        <option value="Spieler1">Minecraft</option>
-        <option value="Spieler2">TeamSpeak3</option>
-        <option value="Spieler3">Hytale</option>
+        <option value="Minecraft">Minecraft</option>
+        <option value="TeamSpeak3">TeamSpeak3</option>
+        <option value="Htyale">Hytale</option>
     </select>
 
     <div class="popup-actions">
@@ -305,31 +161,48 @@ section{
 </div>
 
 <script>
+<script>
+let serverCount = 0;
+const MAX_SERVERS = 1;
+
 function openPopup(id){
-  document.getElementById(id).classList.add("active");
+  const popup = document.getElementById(id);
+  popup.classList.add("active");
 }
 
 function closePopup(id){
-  document.getElementById(id).classList.remove("active");
+  const popup = document.getElementById(id);
+  popup.classList.remove("active");
 }
 
 function createWorld(){
-  const env = document.getElementById("env").value.trim().toLowerCase();
-  const createCard = document.querySelector("#createPopup .popup-card");
+  const name = document.getElementById("name").value.trim();
+  const type = document.getElementById("type").value;
+  const card = document.querySelector("#createPopup .popup-card");
 
-  if(!["normal","nether","end"].includes(env)){
-    createCard.classList.add("shake");
-    setTimeout(()=>createCard.classList.remove("shake"),400);
-
-    setTimeout(()=>{
-      closePopup("createPopup");
-      openPopup("envError");
-    },350);
+  if(!name || !type){
+    card.classList.add("shake");
+    setTimeout(()=>card.classList.remove("shake"),400);
     return;
   }
 
+  if(serverCount >= MAX_SERVERS){
+    closePopup("createPopup");
+    setTimeout(()=>openPopup("limitError"),300);
+    return;
+  }
+
+  serverCount++;
+
   closePopup("createPopup");
-  setTimeout(()=>openPopup("limitError"),300);
+
+  const empty = document.querySelector(".center-empty");
+  empty.innerHTML = `
+    <div style="animation:fadeUp .6s ease forwards;">
+      <strong>${name}</strong><br>
+      <span style="color:var(--muted)">${type}</span>
+    </div>
+  `;
 }
 </script>
 
